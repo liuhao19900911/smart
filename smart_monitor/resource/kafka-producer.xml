@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+                        
+    <!-- 定义producer的参数 -->
+    <bean id="producerProperties" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${producer.bootstrap.servers}" />
+                <entry key="group.id" value="${producer.group.id}" />
+                <entry key="retries" value="${producer.retries}" /><!--设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败  -->
+                <entry key="batch.size" value="${producer.batch.size}" />
+                <entry key="linger.ms" value="${producer.linger.ms}" />
+                <entry key="buffer.memory" value="${producer.buffer.memory}" />
+				<entry key="producer.type" value="${producer.type}" />
+                <entry key="auto.create.topics.enable" value="${producer.auto.create.topics.enable}" />
+                <entry key="key.serializer" value="${producer.key.serializer}" />
+                <entry key="value.serializer"  value="${producer.value.serializer}" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="producerFactory"
+        class="org.springframework.kafka.core.DefaultKafkaProducerFactory">
+        <constructor-arg>
+            <ref bean="producerProperties" />
+        </constructor-arg>
+    </bean>
+
+    <bean id="KafkaTemplate" class="org.springframework.kafka.core.KafkaTemplate">
+        <constructor-arg ref="producerFactory" />
+        <constructor-arg name="autoFlush" value="true" />
+        <property name="defaultTopic" value="test" />
+        <property name="producerListener" ref="producerListener"/>
+    </bean>
+    
+    <bean id="producerListener" class="com.smart.config.KafkaProducerListener" /> 
+</beans>

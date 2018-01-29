@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//resource/config/jdbc.properties=UTF-8
+encoding//resource/config/kafka.properties=UTF-8
+encoding//resource/config/log4j.properties=UTF-8
+encoding//resource/config/memcached.properties=UTF-8
+encoding/<project>=UTF-8
